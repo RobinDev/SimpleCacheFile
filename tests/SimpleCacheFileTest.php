@@ -13,7 +13,7 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
     {
         $key = 'test-cache';
 
-        $fCache = fCache::instance();
+        $fCache = fCache::instance('cache');
         $data = $fCache->getElseCreate($key, 3600, [$this, 'anArray']);
         $this->assertTrue(file_exists($fCache->getCacheFilePath($key)));
 
@@ -21,8 +21,6 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
 
         sleep(1);
         $this->assertTrue(!$fCache->isCacheValid($key, 2));
-
-
     }
 
     public function anArray()
