@@ -1,6 +1,7 @@
 # Make it easy to get and store data in a cache file
 
 [![Quality Score](https://img.shields.io/scrutinizer/g/RobinDev/SimpleCacheFile.svg?style=flat-square)](https://scrutinizer-ci.com/g/RobinDev/SimpleCacheFile)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/1941f35e-53cb-4801-896d-30c2838c3493/mini.png)](https://insight.sensiolabs.com/projects/1941f35e-53cb-4801-896d-30c2838c3493)
 
 SimpleCacheFile is :
 * a PHP librairy wich permit to easily manage cached data (integer, string, array) in files,
