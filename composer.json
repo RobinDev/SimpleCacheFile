@@ -1,0 +1,36 @@
+{
+    "name": "ropendev/cache",
+    "description": "PHP Simple Cache File Librairy (PSR compliant, PSR4 for autoloading).",
+    "keywords": ["cache", "cache file", "tmp", "framework agnostic"],
+    "homepage": "https://github.com/RobinDev/SimpleCacheFile",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": ":Robin",
+            "email": "contact@robin-d.fr",
+            "homepage": "http://www.robin-d.fr/",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+     },
+     "require-dev": {
+        "phpunit/phpunit" : "4.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "rOpenDev\\Cache\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "rOpenDev\\Cache\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
