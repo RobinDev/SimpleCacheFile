@@ -6,6 +6,21 @@ use rOpenDev\Cache\SimpleCacheFile as fCache;
 class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
 {
 
+
+    /**
+     * Test caching data with file prefixed
+     */
+    function testCachingWithPrefix()
+    {
+        $folder = './cache';
+        $prefix = 'newprefix_';
+        $key = 'test-cache';
+        $fCache = new fCache($folder, $prefix);
+        $fCache->getElseCreate($key, 3600, [$this, 'anArray']);
+
+        $this->assertTrue(strpos($fCache->getCacheFilePath($key), $folder.'/'.$prefix) === 0);
+    }
+
     /**
      * Test caching a file
      */
@@ -13,14 +28,29 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
     {
         $key = 'test-cache';
 
-        $fCache = fCache::instance('cache');
+        $fCache = fCache::instance('./cache');
         $data = $fCache->getElseCreate($key, 3600, [$this, 'anArray']);
         $this->assertTrue(file_exists($fCache->getCacheFilePath($key)));
 
         $this->assertTrue(empty(array_diff($this->anArray(), $data)));
 
-        sleep(1);
+        sleep(2);
         $this->assertTrue(!$fCache->isCacheValid($key, 2));
+    }
+
+    /**
+     * Test deleting file by prefix
+     */
+    public function testDeletingFilesByPrefix()
+    {
+        $fCache = fCache::instance('./cache', 'prefix_');
+
+        for ($i=1;$i<=10;++$i) {
+            $key = 'myfilecache'.$i;
+            $data = $fCache->getElseCreate($key, 3600, [$this, 'anArray']);
+        }
+
+        $this->assertTrue($fCache->getMaintener()->deleteCacheFilesByPrefix() == $i-1);
     }
 
     public function anArray()

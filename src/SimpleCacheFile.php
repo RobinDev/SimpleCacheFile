@@ -12,7 +12,6 @@ namespace rOpenDev\Cache;
  */
 class SimpleCacheFile
 {
-
     /**
      * Contain class instances
      * @var array
@@ -75,6 +74,7 @@ class SimpleCacheFile
     protected function setPrefix($prefix)
     {
         $this->prefix = $prefix;
+
         return $this;
     }
 
@@ -88,6 +88,7 @@ class SimpleCacheFile
     protected function setCacheFolder($folder)
     {
         $this->folder = $folder;
+
         return $this;
     }
 
@@ -138,6 +139,7 @@ class SimpleCacheFile
     public function isCacheValid($key, $maxAge)
     {
         $cacheFile = $this->getCacheFilePath($key);
+
         return $this->isCacheFileValid($cacheFile, $maxAge);
     }
 
@@ -152,7 +154,17 @@ class SimpleCacheFile
     protected function isCacheFileValid($cacheFile, $maxAge)
     {
         $expire = time() - $maxAge;
+
         return !file_exists($cacheFile) || filemtime($cacheFile) <= $expire ? false : true;
     }
 
+    /**
+     * Delete all cache files with the $prefix
+     *
+     * @throw \Exception If the prefix is empty
+     */
+    public function getMaintener()
+    {
+        return new Maintener($this->folder, $this->prefix);
+    }
 }

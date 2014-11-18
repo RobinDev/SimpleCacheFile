@@ -26,10 +26,14 @@ use rOpenDev\Cache\SimpleCacheFile as fCache;
 
 $key = 'data-2032'; // string to identify the cached data
 $maxAge = 3600;     // 1 hour
+/** Create a cache file **/
 $data = fCache::instance()->setCacheFolder('/path/to/my/cacheFolder')
                           ->getElseCreate($key , $maxAge, function() {
                                       return 'My first data in cache';
                             });
+
+/** Delete all cache files with the prefix `prfixForCacheFiles_` **/
+fCache::instance('./my-cache-folder', 'prfixForCacheFiles_')->getMaintener()->deleteCacheFilesByPrefix();
 ```
 
 ## Installation
@@ -40,7 +44,7 @@ composer require ropendev/cache
 
 ## Requirements
 
-See `composer.json` file.
+HHVM or PHP 5.5.x minimum is required (See `composer.json` file for details).
 
 ## Contributing
 
