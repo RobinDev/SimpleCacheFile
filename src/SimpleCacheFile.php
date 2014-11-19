@@ -107,13 +107,13 @@ class SimpleCacheFile
     /**
      * Return your cache data else create and return data
      *
-     * @param string $key          String wich permit to identify your cache file
-     * @param int    $maxAge       Time the cache is valid. Default 86400 (1 day).
-     * @param mixed  $userFunction Function wich generate data to cache
+     * @param string $key         String wich permit to identify your cache file
+     * @param int    $maxAge      Time the cache is valid. Default 86400 (1 day).
+     * @param mixed  $dataToCache It can be a function wich generate data to cache or a variable
      *
      * @return mixed Response from your $userFunction (or it cache)
      */
-    public function getElseCreate($key, $maxAge = '86400', $userFunction)
+    public function getElseCreate($key, $maxAge = '86400', $dataToCache)
     {
         $cacheFile = $this->getCacheFilePath($key);
 
@@ -121,7 +121,7 @@ class SimpleCacheFile
             return unserialize(file_get_contents($cacheFile));
         }
 
-        $data = call_user_func($userFunction);
+        $data = is_callable($dataToCache) ? call_user_func($dataToCache) : $dataToCache;
 
         file_put_contents($cacheFile, serialize($data));
 
