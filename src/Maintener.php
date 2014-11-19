@@ -28,12 +28,10 @@ class Maintener extends SimpleCacheFile
         }
 
         $deletedFilesCounter = 0;
-        $files = scandir($this->folder);
+        $files = glob($this->folder.'/'.$this->prefix.'*', GLOB_NOSORT);
         foreach ($files as $file) {
-            if (strpos($file, $this->prefix) === 0) {
-                unlink($this->folder.'/'.$file);
-                ++$deletedFilesCounter;
-            }
+            unlink($file);
+            ++$deletedFilesCounter;
         }
 
         return $deletedFilesCounter;
