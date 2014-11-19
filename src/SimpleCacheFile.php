@@ -161,7 +161,9 @@ class SimpleCacheFile
     /**
      * Delete all cache files with the $prefix
      *
-     * @throw \Exception If the prefix is empty
+     * @throws \Exception If the prefix is empty
+     *
+     * @return \rOpenDev\cache\Maintener
      */
     public function getMaintener()
     {
