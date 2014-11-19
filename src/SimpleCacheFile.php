@@ -107,25 +107,55 @@ class SimpleCacheFile
     /**
      * Return your cache data else create and return data
      *
-     * @param string $key         String wich permit to identify your cache file
-     * @param int    $maxAge      Time the cache is valid. Default 86400 (1 day).
-     * @param mixed  $dataToCache It can be a function wich generate data to cache or a variable
+     * @param string $key    String wich permit to identify your cache file
+     * @param int    $maxAge Time the cache is valid. Default 86400 (1 day).
+     * @param mixed  $data   It can be a function wich generate data to cache or a variable wich will be directly stored
      *
-     * @return mixed Response from your $userFunction (or it cache)
+     * @return mixed Return your $data or the esponse from your function (or it cache)
      */
-    public function getElseCreate($key, $maxAge = '86400', $dataToCache)
+    public function getElseCreate($key, $maxAge, $data)
     {
-        $cacheFile = $this->getCacheFilePath($key);
+        $cachedData = $this->get($key, $maxAge);
 
-        if ($this->isCacheFileValid($cacheFile, $maxAge)) {
-            return unserialize(file_get_contents($cacheFile));
+        if ($cachedData === false) {
+            $cachedData = is_callable($data) ? call_user_func($data) : $data;
+            $this->set($key, $cachedData);
         }
 
-        $data = is_callable($dataToCache) ? call_user_func($dataToCache) : $dataToCache;
+        return $cachedData;
+    }
 
-        file_put_contents($cacheFile, serialize($data));
+    /**
+     * Get your cached data if exist else return false
+     *
+     * @param string $key    String wich permit to identify your cache file
+     * @param int    $maxAge Time the cache is valid. Default 86400 (1 day).
+     *
+     * @return mixed Return FALSE if cache not found or not valid (BUT WHAT IF WE STORE A BOOL EQUAL TO FALSE ?!)
+     */
+    public function get($key, $maxAge = '86400')
+    {
+        $cacheFile = $this->getCacheFilePath($key);
+        if ($this->isCacheFileValid($cacheFile, $maxAge)) {
+            return unserialize(file_get_contents($this->getCacheFilePath($key)));
+        }
 
-        return $data;
+        return false;
+    }
+
+    /**
+     * Set your data in cache
+     *
+     * @param string $key  String wich permit to identify your cache file
+     * @param mixed  $data Variable wich will be directly stored
+     *
+     * @return self
+     */
+    public function set($key, $data)
+    {
+        file_put_contents($this->getCacheFilePath($key), serialize($data));
+
+        return $this;
     }
 
     /**

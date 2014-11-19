@@ -28,7 +28,7 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
     {
         $key = 'test-cache';
 
-        $fCache = fCache::instance('./cache');
+        $fCache = fCache::instance('./cache', 'tmp');
         $data = $fCache->getElseCreate($key, 3600, [$this, 'anArray']);
         $this->assertTrue(file_exists($fCache->getCacheFilePath($key)));
 
@@ -36,6 +36,8 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
 
         sleep(2);
         $this->assertTrue(!$fCache->isCacheValid($key, 2));
+
+        $fCache->getMaintener()->deleteCacheFilesByPrefix();
     }
 
     /**
