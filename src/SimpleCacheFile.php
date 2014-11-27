@@ -129,7 +129,7 @@ class SimpleCacheFile
      * Get your cached data if exist else return false
      *
      * @param string $key    String wich permit to identify your cache file
-     * @param int    $maxAge Time the cache is valid. Default 86400 (1 day).
+     * @param int    $maxAge Time the cache is valid. Default 86400 (1 day). 0 = always valid
      *
      * @return mixed Return FALSE if cache not found or not valid (BUT WHAT IF WE STORE A BOOL EQUAL TO FALSE ?!)
      */
@@ -185,7 +185,7 @@ class SimpleCacheFile
     {
         $expire = time() - $maxAge;
 
-        return !file_exists($cacheFile) || filemtime($cacheFile) <= $expire ? false : true;
+        return !file_exists($cacheFile) || (filemtime($cacheFile) <= $expire && $maxAge !== 0)  ? false : true;
     }
 
     /**

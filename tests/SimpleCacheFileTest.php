@@ -59,4 +59,16 @@ class SimpleCacheFileTest extends \PHPUnit_Framework_TestCase
     {
         return ['tagada' => 'tsoin', 'tsoin'];
     }
+
+    public function testCacheAlwaysValid()
+    {
+        $key = 'my-cache';
+        $data = 'Youhouhouhouhouhou ';
+
+        $fCache = fCache::instance('./cache', 'always');
+        $fCache->set($key, $data);
+        $dataFromCache = $fCache->get($key, 0);
+
+        $this->assertTrue($data == $dataFromCache);
+    }
 }

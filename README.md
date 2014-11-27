@@ -32,6 +32,12 @@ $data = fCache::instance()->setCacheFolder('/path/to/my/cacheFolder')
                                       return 'My first data in cache';
                             });
 
+$folder = './cache';
+$prefix = 'tmp_';
+fCache::instance($folder, $prefix)->set($key, 'My string to set in a cache || But it could be an array or an object...');
+fCache::instance($folder, $prefix)->get($key, $maxAge);
+fCache::instance($folder, $prefix)->get($key, 0);  // Always valid. No expiration
+
 /** Delete all cache files with the prefix `prfixForCacheFiles_` **/
 fCache::instance('./my-cache-folder', 'prfixForCacheFiles_')->getMaintener()->deleteCacheFilesByPrefix();
 ```
